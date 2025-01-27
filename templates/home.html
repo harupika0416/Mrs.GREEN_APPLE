@@ -1,58 +1,156 @@
 <!DOCTYPE html>
 <html lang="ja">
-
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="robots" content="noindex,nofollow">
-
-
-        <title>Home New-Instance</title>
+        <title>Yahoo! JAPAN</title>
         <link rel="icon" href="/img/logo/favicon.ico">
+
+        <!-- 外部CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         
-        <link rel="stylesheet" href="/css/empty.css">
-        <link rel="stylesheet" href="/css/pure-min.css">
-        <link rel="stylesheet" href="/css/grids-responsive-min.css">
-        <link rel="stylesheet" href="/css/ionicons.min.css">
-        <link rel="stylesheet" href="/css/default.css">
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
-        
+        <!-- 外部JS -->
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <style>
+            /* 全体の基本デザイン */
+            body {
+                font-family: 'Arial', sans-serif;
+                background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+                color: #fff;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            #search-widget {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border-radius: 15px;
+                padding: 20px 40px;
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+                text-align: center;
+                width: 100%;
+                max-width: 500px;
+            }
+
+            /* ロゴ部分 */
+            #logo h1 {
+                font-size: 2rem;
+                margin: 0 0 10px;
+                color: #ffffff;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+
+            #logo a {
+                color: #76c7c0;
+                text-decoration: none;
+                font-weight: bold;
+                margin-top: 5px;
+                display: inline-block;
+                transition: color 0.3s ease;
+            }
+
+            #logo a:hover {
+                color: #f4a261;
+            }
+
+            /* 検索バー */
+            .searchbar input[type="search"] {
+                width: 100%;
+                padding: 15px 20px;
+                font-size: 1rem;
+                border: none;
+                border-radius: 25px;
+                outline: none;
+                background: rgba(255, 255, 255, 0.2);
+                color: #ffffff;
+                box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+                transition: background 0.3s ease;
+            }
+
+            .searchbar input[type="search"]:focus {
+                background: rgba(255, 255, 255, 0.3);
+            }
+
+            .searchbar button {
+                position: absolute;
+                top: 50%;
+                right: 20px;
+                transform: translateY(-50%);
+                border: none;
+                background: none;
+                color: #ffffff;
+                font-size: 1.2rem;
+                cursor: pointer;
+            }
+
+            .searchbar button:hover {
+                color: #f4a261;
+            }
+
+            /* オートコンプリート */
+            .ui-autocomplete {
+                background-color: #ffffff;
+                border: 1px solid #cccccc;
+                border-radius: 5px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                font-size: 14px;
+                color: #333;
+            }
+
+            .ui-menu-item {
+                padding: 8px 12px;
+                cursor: pointer;
+            }
+
+            .ui-menu-item:hover {
+                background-color: #76c7c0;
+                color: #fff;
+            }
+        </style>
     </head>
 
-    <body class="no-theme">
-        <div id="search-widget" class="pure-g h-box">
-            
-            <div id="logo" class="pure-u-1">
-                <h1 href="javascript:location.replace('/')" class="pure-menu-heading">New-Instance</h1>
+    <body>
+        <!-- 検索ウィジェット -->
+        <div id="search-widget">
+            <!-- ロゴとリンク -->
+            <div id="logo">
+                <h1>Yahoo Yuki!</h1>
                 <a href="javascript:location.replace('/bbs')">掲示板</a>
             </div>
-            
-            <div class="pure-u-1-4"></div>
-            
-            <div class="pure-u-1 pure-u-md-12-24 searchbar">
-                <form class="pure-form" action="/search" method="get">
-                    <fieldset>
-                        <input id="searchbox" name="q" type="search" placeholder="検索" value="" title="検索" autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false" autofocus="">
-                    </fieldset>
+
+            <!-- 検索バー -->
+            <div class="searchbar" style="position: relative;">
+                <form action="/search" method="get">
+                    <input id="searchbox" name="q" type="search" placeholder="検索キーワードを入力" autocomplete="on">
+                    <button type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </form>
             </div>
-            
-            <div class="pure-u-1-4"></div>
         </div>
+
         <script>
+            /* オートコンプリートの設定 */
             $('#searchbox').autocomplete({
                 source: function (request, response) {
-                    {
-                        var url = "/suggest?keyword=" + request.term
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("GET", url);
-                        xhr.onload = function() {
-                            response(JSON.parse(xhr.responseText));
-                        }
-                        xhr.send();
-                    }
-                },delay:300
+                    var url = "/suggest?keyword=" + request.term;
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", url);
+                    xhr.onload = function() {
+                        response(JSON.parse(xhr.responseText));
+                    };
+                    xhr.send();
+                },
+                delay: 300
             });
         </script>
     </body>
