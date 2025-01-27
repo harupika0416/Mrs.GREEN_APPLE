@@ -6,11 +6,106 @@
         
         <title>504 Gateway Timeout</title>
         <link rel="icon" href="/img/logo/favicon/ico">
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                background-color: #f9f9f9;
+                color: #333;
+                margin: 0;
+                padding: 0;
+            }
+
+            h1 {
+                font-size: 2.5em;
+                color: #ff6666;
+                margin-top: 50px;
+            }
+
+            h3 {
+                font-size: 1.5em;
+                color: #666;
+                margin-bottom: 20px;
+            }
+
+            p {
+                font-size: 1em;
+                color: #555;
+                margin-bottom: 30px;
+            }
+
+            button {
+                background-color: #ff6666;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+                font-size: 1em;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            button:hover {
+                background-color: #ff4c4c;
+            }
+
+            .fun-fact {
+                opacity: 0; 
+                font-size: 1.2em;
+                color: #444;
+                margin-top: 50px;
+                animation: fadeIn 2s ease-out forwards; 
+                cursor: pointer; 
+            }
+
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
     </head>
     <body>
         <h1>504 Gateway Timeout</h1>
         <h3>Load Faild / Timeout</h3>
         <p>読み込みに失敗しました。リロード等をお試し下さい。</p>
         <button onclick="location.replace(location.href)">Reload / リロード</button>
+
+        <!-- スクロールでなんか表示できるお -->
+        <div class="fun-fact" id="funFact">
+            エラー画面見ても何もねぇだろ、何やってんだよ
+        </div>
+
+        <script>
+            const funFacts = [
+                "yahoo yukiのyahooの画面って思いっきり違法だからさ、うん",
+                "俺自体はあんまりプログラムできんのよね、これの元々のやつはニューインスタンス作ったるなのやつ、すごいよね",
+                "こういう小ネタって作者は作るの楽しいけど使う人見ないっていうね、自己満だよね",
+                "エラー画面でyuki作ったことあるわ、もう作るのめんどいけど",
+                "これ全部AIね、プログラム組んだの。"
+            ];
+
+            const funFactElement = document.getElementById("funFact");
+
+            window.addEventListener("scroll", function() {
+                const position = funFactElement.getBoundingClientRect().top; 
+                const screenHeight = window.innerHeight;
+                
+                if (position < screenHeight) {
+                    funFactElement.style.animation = "fadeIn 2s ease-out forwards";
+                }
+            });
+
+            funFactElement.addEventListener("click", function() {
+                const randomIndex = Math.floor(Math.random() * funFacts.length);
+                funFactElement.textContent = funFacts[randomIndex];
+            });
+        </script>
     </body>
 </html>
