@@ -33,10 +33,12 @@
 
             body.day {
                 background: linear-gradient(135deg, #87ceeb, #ffffff); /* 昼の背景 */
+                color: black; /* 昼モードの文字色を黒 */
             }
 
             body.night {
                 background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* 夜の背景 */
+                color: white; /* 夜モードの文字色を白 */
             }
 
             /* 検索バー */
@@ -54,6 +56,53 @@
 
             .searchbar input[type="search"]:focus {
                 background: rgba(255, 255, 255, 0.3);
+            }
+
+            /* 動画のボタンスタイル */
+            .video-card {
+                display: block;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 10px;
+                overflow: hidden;
+                transition: transform 0.3s ease;
+                color: inherit;
+                text-decoration: none;
+            }
+
+            .video-card:hover {
+                transform: scale(1.05); /* ホバー時に少し大きくする */
+                background: rgba(255, 255, 255, 0.2); /* ホバー時に背景色を変更 */
+            }
+
+            .thumbnail img {
+                width: 100%;
+                height: auto;
+                border-bottom: 2px solid #ccc;
+            }
+
+            .video-info {
+                padding: 10px;
+                text-align: left;
+            }
+
+            .video-info p {
+                margin: 5px 0;
+            }
+
+            /* 他の文字色やリンク色 */
+            a {
+                color: inherit; /* 親の色を引き継ぐ */
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline; /* ホバー時に下線を追加 */
+            }
+
+            /* コンテンツの余白 */
+            .pure-g {
+                margin-bottom: 20px;
             }
         </style>
     </head>
@@ -77,50 +126,25 @@
                 <div class="pure-g">
                     {% for result in results %}
                     <div class="pure-u-1 pure-u-md-1-4">
-                            
-                        <div class="h-box">
-                            {% if result["type"] == "video" %}
-                                
-                            <a href="/watch?v={{ result['id'] }}" style="width:100%">
-                                <div class="thumbnail">
-                                    <img class="thumbnail" loading="lazy" src="{% if proxy == 'True' %}/thumbnail?v={{ result['id'] }}{% else %}https://img.youtube.com/vi/{{ result['id'] }}/0.jpg{% endif %}" onerror="document.cookie = 'proxy=True;max-age=2592000;';">
-                                    <p class="length">{{ result["length"] }}</p>
-                                </div>
-                                <p dir="auto">{{ result['title'] }}</p>
-                            </a>
-                                
-                            <div class="video-card-row flexible">
-                                <a href="/channel/{{ result['authorId'] }}">{{ result["author"] }}</a>
+                        
+                        <a class="video-card" href="{% if result["type"] == "video" %}/watch?v={{ result['id'] }}{% elif result["type"] == "channel" %}/channel/{{ result["id"] }}{% elif result["type"] == "playlist" %}/playlist?list={{ result["id"] }}{% endif %}">
+                            <div class="thumbnail">
+                                <img class="thumbnail" loading="lazy" src="{% if proxy == 'True' %}/thumbnail?v={{ result['id'] }}{% else %}https://img.youtube.com/vi/{{ result['id'] }}/0.jpg{% endif %}" onerror="document.cookie = 'proxy=True;max-age=2592000;';">
                             </div>
-                                
-                            <div class="video-card-row flexible">
-                                <div class="flex-left">
+                            <div class="video-info">
+                                <p dir="auto">{{ result['title'] }}</p>
+                                {% if result["type"] == "video" %}
+                                    <p dir="auto">{{ result["author"] }}</p>
                                     <p class="video-data" dir="auto">{{ result["view_count_text"] }}</p>
                                     <p class="video-data" dir="auto">{{ result["published"] }}</p>
-                                </div>
+                                {% elif result["type"] == "channel" %}
+                                    <p dir="auto">{{ result["author"] }}</p>
+                                {% elif result["type"] == "playlist" %}
+                                    <p dir="auto">{{ result["title"] }} ({{ result["count"] }}個の動画)</p>
+                                {% endif %}
                             </div>
-                                
-                            {% elif result["type"] == "channel" %}
-                            <a href="/channel/{{ result["id"] }}">
-                                <center>
-                                    <img loading="lazy" tabindex="-1" style="width:56.25%" src="{{ result["thumbnail"] }}">
-                                </center>
-                                <p dir="auto">{{ result["author"] }}</p>
-                            </a>
-                                
-                            {% elif result["type"] == "playlist" %}
-                            <a style="width: 100%;" href="/playlist?list={{ result["id"] }}">
-                
-                                <div class="thumbnail">
-
-                                    <img loading="lazy" tabindex="-1" class="thumbnail" src="{{ result['thumbnail'] }}">
-                                    
-                                    <p class="length">{{ result["count"] }}個の動画</p>
-                                </div>
-                                <p dir="auto">{{ result["title"] }}</p>
-                                </a>
-                            {% endif %}
-                        </div>
+                        </a>
+                        
                     </div>
                     {% endfor %}
                 </div>
