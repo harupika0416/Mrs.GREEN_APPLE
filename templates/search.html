@@ -8,129 +8,10 @@
         <link rel="stylesheet" href="/css/pure-min.css">
         <link rel="stylesheet" href="/css/grids-responsive-min.css">
         <link rel="stylesheet" href="/css/ionicons.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="/css/default.css">
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <style>
-            /* 共通スタイル */
-            body {
-                font-family: 'Arial', sans-serif;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                overflow: hidden;
-                transition: background 1s ease;
-            }
-
-            body.day {
-                background: linear-gradient(135deg, #87ceeb, #ffffff);
-            }
-
-            body.night {
-                background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            }
-
-            #menu-toggle {
-                position: absolute;
-                top: 20px;
-                left: 20px;
-                cursor: pointer;
-                z-index: 10;
-            }
-
-            #menu-toggle .bar {
-                width: 25px;
-                height: 3px;
-                background-color: #fff;
-                margin: 5px 0;
-                transition: all 0.3s;
-            }
-
-            #menu {
-                position: absolute;
-                top: 0;
-                left: -250px;
-                height: 100%;
-                width: 250px;
-                background-color: rgba(0, 0, 0, 0.7);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                padding: 20px;
-                box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.3);
-                transition: left 0.3s ease;
-            }
-
-            #menu a {
-                color: #fff;
-                text-decoration: none;
-                font-size: 1.2rem;
-                margin: 10px 0;
-                display: block;
-                transition: color 0.3s;
-            }
-
-            #menu a:hover {
-                color: #f4a261;
-            }
-
-            .searchbar input[type="search"] {
-                width: 100%;
-                padding: 15px 20px;
-                font-size: 1rem;
-                border: none;
-                border-radius: 25px;
-                outline: none;
-                background: rgba(255, 255, 255, 0.2);
-                color: #ffffff;
-                box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
-            }
-
-            .searchbar input[type="search"]:focus {
-                background: rgba(255, 255, 255, 0.3);
-            }
-
-            .thumbnail {
-                position: relative;
-                width: 100%;
-                height: 150px;
-                background-color: #ccc;
-                overflow: hidden;
-            }
-
-            .thumbnail img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: transform 0.3s ease;
-            }
-
-            .thumbnail:hover img {
-                transform: scale(1.1);
-            }
-
-            .video-card-row {
-                margin: 10px 0;
-            }
-
-            .video-data {
-                color: #bbb;
-            }
-
-            .length {
-                position: absolute;
-                top: 5px;
-                left: 5px;
-                background-color: rgba(0, 0, 0, 0.7);
-                color: #fff;
-                padding: 2px 8px;
-                border-radius: 10px;
-            }
-        </style>
     </head>
     <body class="no-theme">
         <span id="dark_mode_pref" style="display: none;"></span>
@@ -139,10 +20,11 @@
             
             <div id="contents" class="pure-u-1 pure-u-md-20-24">
                 <div class="pure-g navbar h-box">
+                        
                     <div class="pure-u-1 pure-u-md-12-24 searchbar">
                         <form class="pure-form" action="/search" method="get">
                             <fieldset>
-                                <input id="searchbox" name="q" type="search" placeholder="検索" value="{{ word }}" title="検索" autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false">
+                                <input id="searchbox" name="q" type="search" placeholder="検索" value="{{ word }}" title="検索"  autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false">
                             </fieldset>
                         </form>
                     </div>
@@ -151,8 +33,10 @@
                 <div class="pure-g">
                     {% for result in results %}
                     <div class="pure-u-1 pure-u-md-1-4">
+                            
                         <div class="h-box">
                             {% if result["type"] == "video" %}
+                                
                             <a href="/watch?v={{ result['id'] }}" style="width:100%">
                                 <div class="thumbnail">
                                     <img class="thumbnail" loading="lazy" src="{% if proxy == 'True' %}/thumbnail?v={{ result['id'] }}{% else %}https://img.youtube.com/vi/{{ result['id'] }}/0.jpg{% endif %}" onerror="document.cookie = 'proxy=True;max-age=2592000;';">
@@ -160,15 +44,18 @@
                                 </div>
                                 <p dir="auto">{{ result['title'] }}</p>
                             </a>
+                                
                             <div class="video-card-row flexible">
                                 <a href="/channel/{{ result['authorId'] }}">{{ result["author"] }}</a>
                             </div>
+                                
                             <div class="video-card-row flexible">
                                 <div class="flex-left">
                                     <p class="video-data" dir="auto">{{ result["view_count_text"] }}</p>
                                     <p class="video-data" dir="auto">{{ result["published"] }}</p>
                                 </div>
                             </div>
+                                
                             {% elif result["type"] == "channel" %}
                             <a href="/channel/{{ result["id"] }}">
                                 <center>
@@ -176,14 +63,18 @@
                                 </center>
                                 <p dir="auto">{{ result["author"] }}</p>
                             </a>
+                                
                             {% elif result["type"] == "playlist" %}
                             <a style="width: 100%;" href="/playlist?list={{ result["id"] }}">
+                
                                 <div class="thumbnail">
+
                                     <img loading="lazy" tabindex="-1" class="thumbnail" src="{{ result['thumbnail'] }}">
+                                    
                                     <p class="length">{{ result["count"] }}個の動画</p>
                                 </div>
                                 <p dir="auto">{{ result["title"] }}</p>
-                            </a>
+                                </a>
                             {% endif %}
                         </div>
                     </div>
@@ -204,13 +95,15 @@
         <script>
             $('#searchbox').autocomplete({
                 source: function (request, response) {
-                    var url = "/suggest?keyword=" + request.term
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", url);
-                    xhr.onload = function() {
-                        response(JSON.parse(xhr.responseText));
+                    {
+                        var url = "/suggest?keyword=" + request.term
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("GET", url);
+                        xhr.onload = function() {
+                            response(JSON.parse(xhr.responseText));
+                        }
+                        xhr.send();
                     }
-                    xhr.send();
                 },delay:300
             });
         </script>
