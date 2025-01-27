@@ -12,6 +12,46 @@
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <style>
+            /* 背景設定 */
+            body {
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                overflow: hidden;
+                transition: background 1s ease;
+            }
+
+            body.day {
+                background: linear-gradient(135deg, #87ceeb, #ffffff); /* 昼の背景 */
+            }
+
+            body.night {
+                background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* 夜の背景 */
+            }
+
+            /* 検索バー */
+            .searchbar input[type="search"] {
+                width: 100%;
+                padding: 15px 20px;
+                font-size: 1rem;
+                border: none;
+                border-radius: 25px;
+                outline: none;
+                background: rgba(255, 255, 255, 0.2);
+                color: #ffffff;
+                box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            }
+
+            .searchbar input[type="search"]:focus {
+                background: rgba(255, 255, 255, 0.3);
+            }
+        </style>
     </head>
     <body class="no-theme">
         <span id="dark_mode_pref" style="display: none;"></span>
@@ -24,7 +64,7 @@
                     <div class="pure-u-1 pure-u-md-12-24 searchbar">
                         <form class="pure-form" action="/search" method="get">
                             <fieldset>
-                                <input id="searchbox" name="q" type="search" placeholder="検索" value="{{ word }}" title="検索"  autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false">
+                                <input id="searchbox" name="q" type="search" placeholder="検索" value="{{ word }}" title="検索" autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false">
                             </fieldset>
                         </form>
                     </div>
@@ -92,19 +132,30 @@
                 <a href="{{ next }}">次のページ</a>
             </div>
         </div>
+
         <script>
+            // 時間帯による背景変更
+            function updateBackground() {
+                const hour = new Date().getHours();
+                if (hour >= 6 && hour < 18) {
+                    document.body.className = "day"; // 昼
+                } else {
+                    document.body.className = "night"; // 夜
+                }
+            }
+            updateBackground();
+
             $('#searchbox').autocomplete({
                 source: function (request, response) {
-                    {
-                        var url = "/suggest?keyword=" + request.term
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("GET", url);
-                        xhr.onload = function() {
-                            response(JSON.parse(xhr.responseText));
-                        }
-                        xhr.send();
+                    var url = "/suggest?keyword=" + request.term
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", url);
+                    xhr.onload = function() {
+                        response(JSON.parse(xhr.responseText));
                     }
-                },delay:300
+                    xhr.send();
+                },
+                delay: 300
             });
         </script>
     </body>
