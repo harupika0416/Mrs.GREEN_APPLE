@@ -15,15 +15,19 @@
 
         <style>
             /* 背景設定 */
-            body {
-                font-family: 'Arial', sans-serif;
+            html, body {
+                height: 100%;
                 margin: 0;
                 padding: 0;
+                overflow: auto; /* スクロール可能 */
+            }
+
+            body {
+                font-family: 'Arial', sans-serif;
                 display: flex;
                 justify-content: center;
-                align-items: center;
-                height: 100vh;
-                overflow: hidden;
+                align-items: flex-start; /* コンテンツ上部に配置 */
+                flex-direction: column;
                 transition: background 1s ease;
             }
 
