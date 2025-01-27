@@ -25,18 +25,73 @@
                 align-items: center;
                 height: 100vh;
                 overflow: hidden;
-                transition: background 1s ease; /* 背景の変化をスムーズに */
+                transition: background 1s ease;
             }
 
             /* 背景（昼と夜） */
             body.day {
-                background: linear-gradient(135deg, #87ceeb, #ffffff); /* 昼は青空 */
+                background: linear-gradient(135deg, #87ceeb, #ffffff);
             }
 
             body.night {
-                background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* 夜は暗い色 */
+                background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             }
 
+            /* メニューバー */
+            #menu-toggle {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                cursor: pointer;
+                z-index: 10;
+            }
+
+            #menu-toggle .bar {
+                width: 25px;
+                height: 3px;
+                background-color: #fff;
+                margin: 5px 0;
+                transition: all 0.3s;
+            }
+
+            #menu {
+                position: absolute;
+                top: 0;
+                left: -250px; /* 完全に隠れるように修正 */
+                height: 100%;
+                width: 250px;
+                background-color: rgba(0, 0, 0, 0.7);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 20px;
+                box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.3);
+                transition: left 0.3s ease;
+            }
+
+            #menu a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 1.2rem;
+                margin: 10px 0;
+                display: block;
+                transition: color 0.3s;
+            }
+
+            #menu a:hover {
+                color: #f4a261;
+            }
+
+            /* ロゴ部分（赤色固定） */
+            #logo h1 {
+                font-size: 2rem;
+                margin: 0 0 10px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                color: red;
+            }
+
+            /* 検索ウィジェット */
             #search-widget {
                 background: rgba(255, 255, 255, 0.1);
                 backdrop-filter: blur(10px);
@@ -46,24 +101,6 @@
                 text-align: center;
                 width: 100%;
                 max-width: 500px;
-            }
-
-            /* ロゴ部分（レインボーアニメーション） */
-            #logo h1 {
-                font-size: 2rem;
-                margin: 0 0 10px;
-                text-transform: uppercase;
-                letter-spacing: 2px;
-                background: linear-gradient(90deg, #ff0000, #ff9900, #ffff00, #33cc33, #3399ff, #9900cc);
-                background-size: 300%;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                animation: rainbow 5s linear infinite;
-            }
-
-            @keyframes rainbow {
-                0% { background-position: 0% 50%; }
-                100% { background-position: 100% 50%; }
             }
 
             /* 検索バー */
@@ -123,12 +160,23 @@
     </head>
 
     <body>
+        <!-- メニューバー -->
+        <div id="menu-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+
+        <div id="menu">
+            <a href="javascript:void(0);" id="invert-color">色反転</a>
+            <a href="javascript:location.replace('/bbs')" id="menu-bbs">掲示板</a> <!-- メニューに掲示板を追加 -->
+        </div>
+
         <!-- 検索ウィジェット -->
         <div id="search-widget">
             <!-- ロゴとリンク -->
             <div id="logo">
                 <h1>Yahoo Yuki!</h1>
-                <a href="javascript:location.replace('/bbs')">掲示板</a>
             </div>
 
             <!-- 検索バー -->
@@ -154,34 +202,27 @@
             }
             updateBackground();
 
-            /* プレースホルダーのテキストをスムーズに変化 */
-            const placeholderTexts = [
-                "検索キーワードを入力",
-                "例えば: 天気",
-                "例えば: ニュース",
-                "例えば: 人気商品",
-            ];
-            let placeholderIndex = 0;
+            /* メニューのトグル */
+            const menuToggle = document.getElementById('menu-toggle');
+            const menu = document.getElementById('menu');
+            const bars = document.querySelectorAll('#menu-toggle .bar');
 
-            function changePlaceholder() {
-                const searchbox = document.getElementById("searchbox");
-                placeholderIndex = (placeholderIndex + 1) % placeholderTexts.length;
-                searchbox.setAttribute("placeholder", placeholderTexts[placeholderIndex]);
-            }
-            setInterval(changePlaceholder, 3000); // 3秒ごとに変化
+            menuToggle.addEventListener('click', function() {
+                // メニューが完全に隠れるように修正
+                if (menu.style.left === '0px') {
+                    menu.style.left = '-250px';
+                } else {
+                    menu.style.left = '0px';
+                }
 
-            /* オートコンプリートの設定 */
-            $('#searchbox').autocomplete({
-                source: function (request, response) {
-                    var url = "/suggest?keyword=" + request.term;
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", url);
-                    xhr.onload = function() {
-                        response(JSON.parse(xhr.responseText));
-                    };
-                    xhr.send();
-                },
-                delay: 300
+                bars.forEach(bar => bar.classList.toggle('active'));
+            });
+
+            /* 色反転を切り替える */
+            const invertColorButton = document.getElementById('invert-color');
+            invertColorButton.addEventListener('click', function() {
+                document.body.classList.toggle('day');
+                document.body.classList.toggle('night');
             });
         </script>
     </body>
