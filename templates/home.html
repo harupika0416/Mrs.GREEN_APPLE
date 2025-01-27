@@ -37,51 +37,6 @@
                 background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             }
 
-            /* メニューバー */
-            #menu-toggle {
-                position: absolute;
-                top: 20px;
-                left: 20px;
-                cursor: pointer;
-                z-index: 10;
-            }
-
-            #menu-toggle .bar {
-                width: 25px;
-                height: 3px;
-                background-color: #fff;
-                margin: 5px 0;
-                transition: all 0.3s;
-            }
-
-            #menu {
-                position: absolute;
-                top: 0;
-                left: -250px; /* 完全に隠れるように修正 */
-                height: 100%;
-                width: 250px;
-                background-color: rgba(0, 0, 0, 0.7);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                padding: 20px;
-                box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.3);
-                transition: left 0.3s ease;
-            }
-
-            #menu a {
-                color: #fff;
-                text-decoration: none;
-                font-size: 1.2rem;
-                margin: 10px 0;
-                display: block;
-                transition: color 0.3s;
-            }
-
-            #menu a:hover {
-                color: #f4a261;
-            }
-
             /* ロゴ部分（赤色固定） */
             #logo h1 {
                 font-size: 2rem;
@@ -156,22 +111,30 @@
                 background-color: #76c7c0;
                 color: #fff;
             }
+
+            /* 右下の掲示板ボタン */
+            #menu-bbs {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: rgba(0, 0, 0, 0.7);
+                color: #fff;
+                padding: 15px 30px;
+                border-radius: 30px;
+                font-size: 1.2rem;
+                text-decoration: none;
+                transition: background 0.3s ease, color 0.3s ease;
+                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            }
+
+            #menu-bbs:hover {
+                background-color: #f4a261;
+                color: #fff;
+            }
         </style>
     </head>
 
     <body>
-        <!-- メニューバー -->
-        <div id="menu-toggle">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
-
-        <div id="menu">
-            <a href="javascript:void(0);" id="invert-color">色反転</a>
-            <a href="javascript:location.replace('/bbs')" id="menu-bbs">掲示板</a> <!-- メニューに掲示板を追加 -->
-        </div>
-
         <!-- 検索ウィジェット -->
         <div id="search-widget">
             <!-- ロゴとリンク -->
@@ -190,6 +153,9 @@
             </div>
         </div>
 
+        <!-- 右下の掲示板ボタン -->
+        <a href="javascript:location.replace('/bbs')" id="menu-bbs">掲示板</a>
+
         <script>
             /* 時間帯による背景の変更 */
             function updateBackground() {
@@ -201,22 +167,6 @@
                 }
             }
             updateBackground();
-
-            /* メニューのトグル */
-            const menuToggle = document.getElementById('menu-toggle');
-            const menu = document.getElementById('menu');
-            const bars = document.querySelectorAll('#menu-toggle .bar');
-
-            menuToggle.addEventListener('click', function() {
-                // メニューが完全に隠れるように修正
-                if (menu.style.left === '0px') {
-                    menu.style.left = '-250px';
-                } else {
-                    menu.style.left = '0px';
-                }
-
-                bars.forEach(bar => bar.classList.toggle('active'));
-            });
 
             /* 色反転を切り替える */
             const invertColorButton = document.getElementById('invert-color');
