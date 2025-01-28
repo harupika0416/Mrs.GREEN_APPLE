@@ -64,6 +64,29 @@
             /* コンテンツエリアの上マージン調整 */
             #contents {
                 margin-top: 80px; /* 検索バー分の高さを確保 */
+                display: flex;
+            }
+            .content-left {
+                width: 80%;
+                padding-right: 10px;
+            }
+            .content-right {
+                width: 20%;
+                padding-left: 10px;
+                background-color: #f4f4f4;
+                padding: 10px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .sidebar-icon {
+                font-size: 2em;
+                margin: 15px 0;
+                color: #333;
+                text-align: center;
+                cursor: pointer;
+            }
+            .sidebar-icon:hover {
+                color: #007bff;
             }
         </style>
     </head>
@@ -83,10 +106,8 @@
         </div>
 
         <div class="pure-g" id="contents">
-            <div class="pure-u-1 pure-u-md-2-24"></div>
-            
-            <div class="pure-u-1 pure-u-md-20-24">
-                <div class="pure-g">
+            <div class="content-left pure-u-1 pure-u-md-3-4">
+                <div class="pure-u-1">
                     {% for result in results %}
                     <div class="pure-u-1 pure-u-md-1-4">
                         <div class="h-box">
@@ -128,6 +149,22 @@
                         </div>
                     </div>
                     {% endfor %}
+                </div>
+            </div>
+
+            <!-- サイドバー（右側の装飾） -->
+            <div class="content-right pure-u-1 pure-u-md-1-4">
+                <div class="sidebar-icon">
+                    <i class="ion-home"></i><br>ホーム
+                </div>
+                <div class="sidebar-icon">
+                    <i class="ion-person"></i><br>プロフィール
+                </div>
+                <div class="sidebar-icon">
+                    <i class="ion-gear-b"></i><br>設定
+                </div>
+                <div class="sidebar-icon">
+                    <i class="ion-chatbox"></i><br>メッセージ
                 </div>
             </div>
         </div>
