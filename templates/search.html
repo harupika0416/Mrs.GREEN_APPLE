@@ -72,7 +72,7 @@
             }
 
             .video-item {
-                flex: 1 1 calc(100% / 5 - 10px); /* 5列 */
+                width: 22%;
                 margin: 5px;
                 text-align: center;
                 background-color: #f9f9f9;
@@ -94,19 +94,19 @@
             /* レスポンシブ対応 */
             @media screen and (max-width: 1200px) {
                 .video-item {
-                    flex: 1 1 calc(100% / 4 - 10px); /* 4列 */
+                    width: 30%; /* 4列 */
                 }
             }
 
             @media screen and (max-width: 900px) {
                 .video-item {
-                    flex: 1 1 calc(100% / 3 - 10px); /* 3列 */
+                    width: 45%; /* 3列 */
                 }
             }
 
             @media screen and (max-width: 600px) {
                 .video-item {
-                    flex: 1 1 calc(100% / 2 - 10px); /* 2列 */
+                    width: 90%; /* 2列 */
                 }
 
                 #searchbox {
