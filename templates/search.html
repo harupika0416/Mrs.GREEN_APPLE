@@ -6,7 +6,6 @@
         <title>検索</title>
         <link rel="icon" href="/img/logo/favicon.ico">
         <link rel="stylesheet" href="/css/pure-min.css">
-        <link rel="stylesheet" href="/css/grids-responsive-min.css">
         <link rel="stylesheet" href="/css/ionicons.min.css">
         <link rel="stylesheet" href="/css/default.css">
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
@@ -66,35 +65,49 @@
 
             #contents {
                 margin-top: 80px;
-            }
-
-            /* 動画一覧のグリッド設定 */
-            .pure-g {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 自動で詰める */
-                gap: 10px; /* 隙間の調整 */
+                overflow: hidden;
                 padding: 10px;
             }
 
-            .pure-g .h-box {
+            .video-item {
+                float: left;
+                width: calc(100% / 5 - 10px); /* 5列で表示 */
+                margin: 0 5px 10px 5px;
+                text-align: center;
                 background-color: #f9f9f9;
                 border: 1px solid #ddd;
                 border-radius: 8px;
+                box-sizing: border-box;
                 padding: 10px;
-                text-align: center;
             }
 
-            .thumbnail img {
+            .video-item img {
                 width: 100%;
                 border-radius: 8px;
             }
 
-            .thumbnail p {
+            .video-item p {
                 margin: 5px 0 0 0;
             }
 
             /* レスポンシブ対応 */
+            @media screen and (max-width: 1200px) {
+                .video-item {
+                    width: calc(100% / 4 - 10px); /* 4列 */
+                }
+            }
+
+            @media screen and (max-width: 900px) {
+                .video-item {
+                    width: calc(100% / 3 - 10px); /* 3列 */
+                }
+            }
+
             @media screen and (max-width: 600px) {
+                .video-item {
+                    width: calc(100% / 2 - 10px); /* 2列 */
+                }
+
                 #searchbox {
                     width: 300px;
                 }
@@ -118,45 +131,28 @@
         </div>
 
         <div id="contents">
-            <div class="pure-g">
-                {% for result in results %}
-                <div class="h-box">
-                    {% if result["type"] == "video" %}
-                        <a href="/watch?v={{ result['id'] }}" style="width:100%">
-                            <div class="thumbnail">
-                                <img loading="lazy" src="{% if proxy == 'True' %}/thumbnail?v={{ result['id'] }}{% else %}https://img.youtube.com/vi/{{ result['id'] }}/0.jpg{% endif %}" onerror="document.cookie = 'proxy=True;max-age=2592000;';">
-                                <p class="length">{{ result["length"] }}</p>
-                            </div>
-                            <p dir="auto">{{ result['title'] }}</p>
-                        </a>
-                        <div class="video-card-row flexible">
-                            <a href="/channel/{{ result['authorId'] }}">{{ result["author"] }}</a>
+            {% for result in results %}
+            <div class="video-item">
+                {% if result["type"] == "video" %}
+                    <a href="/watch?v={{ result['id'] }}" style="width:100%">
+                        <div class="thumbnail">
+                            <img loading="lazy" src="{% if proxy == 'True' %}/thumbnail?v={{ result['id'] }}{% else %}https://img.youtube.com/vi/{{ result['id'] }}/0.jpg{% endif %}" onerror="document.cookie = 'proxy=True;max-age=2592000;';">
+                            <p class="length">{{ result["length"] }}</p>
                         </div>
-                        <div class="video-card-row flexible">
-                            <div class="flex-left">
-                                <p class="video-data" dir="auto">{{ result["view_count_text"] }}</p>
-                                <p class="video-data" dir="auto">{{ result["published"] }}</p>
-                            </div>
+                        <p dir="auto">{{ result['title'] }}</p>
+                    </a>
+                    <div class="video-card-row flexible">
+                        <a href="/channel/{{ result['authorId'] }}">{{ result["author"] }}</a>
+                    </div>
+                    <div class="video-card-row flexible">
+                        <div class="flex-left">
+                            <p class="video-data" dir="auto">{{ result["view_count_text"] }}</p>
+                            <p class="video-data" dir="auto">{{ result["published"] }}</p>
                         </div>
-                    {% elif result["type"] == "channel" %}
-                        <a href="/channel/{{ result["id"] }}">
-                            <center>
-                                <img loading="lazy" tabindex="-1" style="width:56.25%" src="{{ result["thumbnail"] }}">
-                            </center>
-                            <p dir="auto">{{ result["author"] }}</p>
-                        </a>
-                    {% elif result["type"] == "playlist" %}
-                        <a style="width: 100%;" href="/playlist?list={{ result["id"] }}">
-                            <div class="thumbnail">
-                                <img loading="lazy" tabindex="-1" class="thumbnail" src="{{ result['thumbnail'] }}">
-                                <p class="length">{{ result["count"] }}個の動画</p>
-                            </div>
-                            <p dir="auto">{{ result["title"] }}</p>
-                        </a>
-                    {% endif %}
-                </div>
-                {% endfor %}
+                    </div>
+                {% endif %}
             </div>
+            {% endfor %}
         </div>
 
         <script>
