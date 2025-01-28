@@ -35,25 +35,31 @@
                 cursor: pointer;
                 margin-right: 20px;
             }
-            /* 検索バーのスタイル */
+            /* 検索バーのスタイル（小さく調整） */
             #searchbox {
-                width: 500px;
-                padding: 15px;
+                width: 400px;  /* 少し小さく */
+                padding: 10px;
                 border: none;
                 border-radius: 30px 0 0 30px;
                 outline: none;
-                box-shadow: 0 0 20px 6px rgba(128, 128, 128, 0.5);
-                font-size: 1.5em;
+                box-shadow: 0 0 15px 4px rgba(128, 128, 128, 0.5);
+                font-size: 1.2em;
             }
             #search-button {
-                padding: 15px 20px;
+                padding: 10px 15px;
                 border: none;
                 background-color: #333;
                 color: #fff;
                 border-radius: 0 30px 30px 0;
-                font-size: 1.5em;
+                font-size: 1.2em;
                 cursor: pointer;
                 outline: none;
+            }
+            /* 検索欄右側の装飾 */
+            #search-decoration {
+                margin-left: 15px;
+                font-size: 1.5em;
+                color: white;
             }
             /* コンテンツエリアの上マージン調整 */
             #contents {
@@ -71,6 +77,9 @@
                 <input id="searchbox" name="q" type="search" placeholder="検索" value="{{ word }}" title="検索" autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false">
                 <button id="search-button" type="submit">検索</button>
             </form>
+            <div id="search-decoration">
+                <i class="ion-search"></i> <!-- アイコンを装飾として追加 -->
+            </div>
         </div>
 
         <div class="pure-g" id="contents">
