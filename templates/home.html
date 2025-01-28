@@ -1,59 +1,109 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="robots" content="noindex,nofollow">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yahoo Yuki!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/2.0.6/pure-min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
 
+        #logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-        <title>Yahoo JAPAN!</title>
-        <link rel="icon" href="/img/logo/favicon.ico">
-        
-        <link rel="stylesheet" href="/css/empty.css">
-        <link rel="stylesheet" href="/css/pure-min.css">
-        <link rel="stylesheet" href="/css/grids-responsive-min.css">
-        <link rel="stylesheet" href="/css/ionicons.min.css">
-        <link rel="stylesheet" href="/css/default.css">
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
-        
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    </head>
+        #logo h1 {
+            font-size: 6em;
+            color: #333;
+            font-weight: bold;
+        }
 
-    <body class="no-theme">
-        <div id="search-widget" class="pure-g h-box">
-            
-            <div id="logo" class="pure-u-1">
-                <h1 href="javascript:location.replace('/')" class="pure-menu-heading">Yahoo yuki !</h1>
-                <a href="javascript:location.replace('/bbs')">掲示板</a>
-            </div>
-            
-            <div class="pure-u-1-4"></div>
-            
-            <div class="pure-u-1 pure-u-md-12-24 searchbar">
-                <form class="pure-form" action="/search" method="get">
-                    <fieldset>
-                        <input id="searchbox" name="q" type="search" placeholder="検索" value="" title="検索" autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false" autofocus="">
-                    </fieldset>
-                </form>
-            </div>
-            
-            <div class="pure-u-1-4"></div>
-        </div>
-        <script>
-            $('#searchbox').autocomplete({
-                source: function (request, response) {
-                    {
-                        var url = "/suggest?keyword=" + request.term
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("GET", url);
-                        xhr.onload = function() {
-                            response(JSON.parse(xhr.responseText));
-                        }
-                        xhr.send();
-                    }
-                },delay:300
-            });
-        </script>
-    </body>
+        .searchbar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #searchbox {
+            width: 500px;
+            padding: 15px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            outline: none;
+            box-shadow: 0 0 20px 6px rgba(128, 128, 128, 0.5);
+            font-size: 1.5em;
+        }
+
+        .search-button {
+            padding: 15px 20px;
+            border: none;
+            background-color: #333;
+            color: #fff;
+            border-radius: 0 30px 30px 0;
+            font-size: 1.5em;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .search-button:hover {
+            background-color: #555;
+        }
+
+        .bbs-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #e60000;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5em;
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .bbs-button:hover {
+            background-color: #b30000;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="logo">
+        <h1>Yahoo Yuki!</h1>
+    </div>
+    <div class="searchbar">
+        <form action="/search" method="get" style="display: flex;">
+            <input id="searchbox" name="q" type="search" placeholder="検索">
+            <button type="submit" class="search-button">
+                🔍
+            </button>
+        </form>
+    </div>
+    <a href="/bbs" class="bbs-button">掲示板</a>
+
+    <script>
+        const placeholderWords = ["検索", "...", "何で検索しないん？", "ここにいても意味ないぞ", "本当に何もないぞ", "はぁ...", "パスワードを教えてやろう、a_α だ"];
+        let index = 0;
+
+        setInterval(() => {
+            const searchbox = document.getElementById("searchbox");
+            searchbox.placeholder = placeholderWords[index];
+            index = (index + 1) % placeholderWords.length; 
+        }, 10000);
+    </script>
+</body>
+
 </html>
