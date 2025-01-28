@@ -55,38 +55,20 @@
                 cursor: pointer;
                 outline: none;
             }
-            /* 検索欄右側の装飾 */
-            #search-decoration {
-                margin-left: 15px;
-                font-size: 1.5em;
-                color: white;
-            }
             /* コンテンツエリアの上マージン調整 */
             #contents {
                 margin-top: 80px; /* 検索バー分の高さを確保 */
-                display: flex;
             }
             .content-left {
-                width: 80%;
-                padding-right: 10px;
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);  /* 5個の列に変更 */
+                gap: 20px;
             }
-            .content-right {
-                width: 20%;
-                padding-left: 10px;
-                background-color: #f4f4f4;
-                padding: 10px;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            .content-left .pure-u-1 {
+                display: block;
             }
-            .sidebar-icon {
-                font-size: 2em;
-                margin: 15px 0;
-                color: #333;
-                text-align: center;
-                cursor: pointer;
-            }
-            .sidebar-icon:hover {
-                color: #007bff;
+            .pure-g .pure-u-1 {
+                width: 100%;
             }
         </style>
     </head>
@@ -100,72 +82,51 @@
                 <input id="searchbox" name="q" type="search" placeholder="検索" value="{{ word }}" title="検索" autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false">
                 <button id="search-button" type="submit">検索</button>
             </form>
-            <div id="search-decoration">
-                <i class="ion-search"></i> <!-- アイコンを装飾として追加 -->
-            </div>
         </div>
 
         <div class="pure-g" id="contents">
-            <div class="content-left pure-u-1 pure-u-md-3-4">
-                <div class="pure-u-1">
-                    {% for result in results %}
-                    <div class="pure-u-1 pure-u-md-1-4">
-                        <div class="h-box">
-                            {% if result["type"] == "video" %}
-                                <a href="/watch?v={{ result['id'] }}" style="width:100%">
-                                    <div class="thumbnail">
-                                        <img class="thumbnail" loading="lazy" src="{% if proxy == 'True' %}/thumbnail?v={{ result['id'] }}{% else %}https://img.youtube.com/vi/{{ result['id'] }}/0.jpg{% endif %}" onerror="document.cookie = 'proxy=True;max-age=2592000;';">
-                                        <p class="length">{{ result["length"] }}</p>
-                                    </div>
-                                    <p dir="auto">{{ result['title'] }}</p>
-                                </a>
-                                
-                                <div class="video-card-row flexible">
-                                    <a href="/channel/{{ result['authorId'] }}">{{ result["author"] }}</a>
-                                </div>
-                                
-                                <div class="video-card-row flexible">
-                                    <div class="flex-left">
-                                        <p class="video-data" dir="auto">{{ result["view_count_text"] }}</p>
-                                        <p class="video-data" dir="auto">{{ result["published"] }}</p>
-                                    </div>
-                                </div>
-                            {% elif result["type"] == "channel" %}
-                                <a href="/channel/{{ result["id"] }}">
-                                    <center>
-                                        <img loading="lazy" tabindex="-1" style="width:56.25%" src="{{ result["thumbnail"] }}">
-                                    </center>
-                                    <p dir="auto">{{ result["author"] }}</p>
-                                </a>
-                            {% elif result["type"] == "playlist" %}
-                                <a style="width: 100%;" href="/playlist?list={{ result["id"] }}">
-                                    <div class="thumbnail">
-                                        <img loading="lazy" tabindex="-1" class="thumbnail" src="{{ result['thumbnail'] }}">
-                                        <p class="length">{{ result["count"] }}個の動画</p>
-                                    </div>
-                                    <p dir="auto">{{ result["title"] }}</p>
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+            <div class="content-left pure-u-1">
+                {% for result in results %}
+                <div class="pure-u-1 pure-u-md-1-5">
+                    <div class="h-box">
+                        {% if result["type"] == "video" %}
+                        <a href="/watch?v={{ result['id'] }}" style="width:100%">
+                            <div class="thumbnail">
+                                <img class="thumbnail" loading="lazy" src="{% if proxy == 'True' %}/thumbnail?v={{ result['id'] }}{% else %}https://img.youtube.com/vi/{{ result['id'] }}/0.jpg{% endif %}" onerror="document.cookie = 'proxy=True;max-age=2592000;';">
+                                <p class="length">{{ result["length"] }}</p>
+                            </div>
+                            <p dir="auto">{{ result['title'] }}</p>
+                        </a>
 
-            <!-- サイドバー（右側の装飾） -->
-            <div class="content-right pure-u-1 pure-u-md-1-4">
-                <div class="sidebar-icon">
-                    <i class="ion-home"></i><br>ホーム
+                        <div class="video-card-row flexible">
+                            <a href="/channel/{{ result['authorId'] }}">{{ result["author"] }}</a>
+                        </div>
+
+                        <div class="video-card-row flexible">
+                            <div class="flex-left">
+                                <p class="video-data" dir="auto">{{ result["view_count_text"] }}</p>
+                                <p class="video-data" dir="auto">{{ result["published"] }}</p>
+                            </div>
+                        </div>
+                        {% elif result["type"] == "channel" %}
+                        <a href="/channel/{{ result["id"] }}">
+                            <center>
+                                <img loading="lazy" tabindex="-1" style="width:56.25%" src="{{ result["thumbnail"] }}">
+                            </center>
+                            <p dir="auto">{{ result["author"] }}</p>
+                        </a>
+                        {% elif result["type"] == "playlist" %}
+                        <a style="width: 100%;" href="/playlist?list={{ result["id"] }}">
+                            <div class="thumbnail">
+                                <img loading="lazy" tabindex="-1" class="thumbnail" src="{{ result['thumbnail'] }}">
+                                <p class="length">{{ result["count"] }}個の動画</p>
+                            </div>
+                            <p dir="auto">{{ result["title"] }}</p>
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="sidebar-icon">
-                    <i class="ion-person"></i><br>プロフィール
-                </div>
-                <div class="sidebar-icon">
-                    <i class="ion-gear-b"></i><br>設定
-                </div>
-                <div class="sidebar-icon">
-                    <i class="ion-chatbox"></i><br>メッセージ
-                </div>
+                {% endfor %}
             </div>
         </div>
 
