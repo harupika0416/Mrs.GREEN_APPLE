@@ -13,33 +13,60 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <style>
-        /* 検索バーをページ上部に固定 */
-        .searchbar {
+        /* ヘッダーの灰色バー */
+        .header-bar {
             background-color: #d3d3d3;
-            padding: 10px;
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 10;
             box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            align-items: center;
         }
 
-        .searchbar input[type="search"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        /* 'Yahoo Yuki !' のリンク */
+        /* 'Yahoo Yuki !' のロゴリンク */
         .logo {
             font-size: 24px;
             font-weight: bold;
             text-decoration: none;
             color: #000;
-            position: absolute;
-            top: 10px;
-            left: 20px;
+        }
+
+        /* 検索バー */
+        .searchbar {
+            display: flex;
+            align-items: center;
+        }
+
+        .searchbar input[type="search"] {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* 背景色を時間帯で変更 */
+        body {
+            transition: background-color 0.5s ease;
+        }
+
+        /* 朝 */
+        .morning {
+            background-color: #ffebcd; /* 明るいベージュ */
+        }
+
+        /* 昼 */
+        .afternoon {
+            background-color: #add8e6; /* ライトブルー */
+        }
+
+        /* 夜 */
+        .night {
+            background-color: #2f4f4f; /* ダークグリーン */
+            color: white;
         }
 
         /* 検索結果のリスト */
@@ -101,23 +128,23 @@
         }
     </style>
 </head>
-<body class="no-theme">
-    <a href="/" class="logo">Yahoo Yuki !</a> <!-- Yahoo Yuki! ロゴリンク -->
+<body>
+    <!-- ヘッダーの灰色バー -->
+    <div class="header-bar">
+        <a href="/" class="logo">Yahoo Yuki !</a>
+        <div class="searchbar">
+            <form class="pure-form" action="/search" method="get">
+                <fieldset>
+                    <input id="searchbox" name="q" type="search" placeholder="検索" value="{{ word }}" title="検索" autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false">
+                </fieldset>
+            </form>
+        </div>
+    </div>
 
     <div class="pure-g">
         <div class="pure-u-1 pure-u-md-2-24"></div>
 
         <div id="contents" class="pure-u-1 pure-u-md-20-24">
-            <div class="pure-g navbar h-box">
-                <div class="pure-u-1 pure-u-md-12-24 searchbar">
-                    <form class="pure-form" action="/search" method="get">
-                        <fieldset>
-                            <input id="searchbox" name="q" type="search" placeholder="検索" value="{{ word }}" title="検索" autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false">
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
-
             <div class="search-results">
                 <div class="pure-g">
                     {% for result in results %}
@@ -186,6 +213,20 @@
             },
             delay: 300
         });
+
+        // 時間帯によって背景色を変更する
+        window.onload = function() {
+            var currentHour = new Date().getHours();
+            var body = document.body;
+
+            if (currentHour >= 6 && currentHour < 12) {
+                body.classList.add('morning'); // 朝
+            } else if (currentHour >= 12 && currentHour < 18) {
+                body.classList.add('afternoon'); // 昼
+            } else {
+                body.classList.add('night'); // 夜
+            }
+        }
     </script>
 </body>
 </html>
