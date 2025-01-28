@@ -55,6 +55,17 @@
                 cursor: pointer;
                 outline: none;
             }
+            /* 次のページボタンのスタイル */
+            #next-page {
+                background-color: #333;
+                color: white;
+                padding: 10px 20px;
+                margin-left: 20px;
+                border-radius: 30px;
+                cursor: pointer;
+                font-size: 1.2em;
+                text-decoration: none;
+            }
             /* コンテンツエリアの上マージン調整 */
             #contents {
                 margin-top: 80px; /* 検索バー分の高さを確保 */
@@ -82,6 +93,8 @@
                 <input id="searchbox" name="q" type="search" placeholder="検索" value="{{ word }}" title="検索" autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false">
                 <button id="search-button" type="submit">検索</button>
             </form>
+            <!-- 次のページボタン -->
+            <a href="{{ next }}" id="next-page">次のページ</a>
         </div>
 
         <div class="pure-g" id="contents">
