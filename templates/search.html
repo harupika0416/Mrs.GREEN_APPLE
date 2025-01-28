@@ -6,22 +6,16 @@
         <title>検索</title>
         <link rel="icon" href="/img/logo/favicon.ico">
         <link rel="stylesheet" href="/css/pure-min.css">
+        <link rel="stylesheet" href="/css/grids-responsive-min.css">
         <link rel="stylesheet" href="/css/ionicons.min.css">
         <link rel="stylesheet" href="/css/default.css">
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <style>
-            body, html {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                width: 100%;
-                overflow-x: hidden;
-            }
-
+            /* 固定された検索欄のスタイル */
             #search-container {
-                background-color: #808080;
+                background-color: #808080; /* 灰色 */
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -32,7 +26,7 @@
                 align-items: center;
                 justify-content: center;
             }
-
+            /* 「Yahoo Yuki !」のスタイル */
             #home-link {
                 font-size: 18px;
                 font-weight: bold;
@@ -41,19 +35,18 @@
                 cursor: pointer;
                 margin-right: 20px;
             }
-
+            /* 検索バーのスタイル */
             #searchbox {
-                width: 400px;
-                padding: 10px;
+                width: 400px; /* 幅を小さく */
+                padding: 12px; /* パディングを小さく */
                 border: none;
                 border-radius: 30px 0 0 30px;
                 outline: none;
-                box-shadow: 0 0 15px 4px rgba(128, 128, 128, 0.5);
-                font-size: 1.2em;
+                box-shadow: 0 0 20px 6px rgba(128, 128, 128, 0.5);
+                font-size: 1.2em; /* フォントサイズも少し小さく */
             }
-
             #search-button {
-                padding: 10px 15px;
+                padding: 12px 15px; /* ボタンのパディングも調整 */
                 border: none;
                 background-color: #333;
                 color: #fff;
@@ -62,67 +55,16 @@
                 cursor: pointer;
                 outline: none;
             }
-
+            /* コンテンツエリアの上マージン調整 */
             #contents {
-                margin-top: 80px;
-                padding: 10px;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: flex-start;
-            }
-
-            .video-item {
-                width: 22%;
-                margin: 5px;
-                text-align: center;
-                background-color: #f9f9f9;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                box-sizing: border-box;
-                padding: 10px;
-            }
-
-            .video-item img {
-                width: 100%;
-                border-radius: 8px;
-            }
-
-            .video-item p {
-                margin: 5px 0 0 0;
-            }
-
-            /* レスポンシブ対応 */
-            @media screen and (max-width: 1200px) {
-                .video-item {
-                    width: 30%; /* 4列 */
-                }
-            }
-
-            @media screen and (max-width: 900px) {
-                .video-item {
-                    width: 45%; /* 3列 */
-                }
-            }
-
-            @media screen and (max-width: 600px) {
-                .video-item {
-                    width: 90%; /* 2列 */
-                }
-
-                #searchbox {
-                    width: 300px;
-                }
-
-                #search-button {
-                    font-size: 1em;
-                    padding: 8px 12px;
-                }
+                margin-top: 80px; /* 検索バー分の高さを確保 */
             }
         </style>
     </head>
     <body class="no-theme">
         <span id="dark_mode_pref" style="display: none;"></span>
 
+        <!-- 固定された検索欄 -->
         <div id="search-container">
             <a id="home-link" href="/">Yahoo Yuki !</a>
             <form class="pure-form" action="/search" method="get" style="display: flex;">
@@ -131,29 +73,54 @@
             </form>
         </div>
 
-        <div id="contents">
-            {% for result in results %}
-            <div class="video-item">
-                {% if result["type"] == "video" %}
-                    <a href="/watch?v={{ result['id'] }}" style="width:100%">
-                        <div class="thumbnail">
-                            <img loading="lazy" src="{% if proxy == 'True' %}/thumbnail?v={{ result['id'] }}{% else %}https://img.youtube.com/vi/{{ result['id'] }}/0.jpg{% endif %}" onerror="document.cookie = 'proxy=True;max-age=2592000;';">
-                            <p class="length">{{ result["length"] }}</p>
+        <div class="pure-g" id="contents">
+            <div class="pure-u-1 pure-u-md-2-24"></div>
+            
+            <div class="pure-u-1 pure-u-md-20-24">
+                <div class="pure-g">
+                    {% for result in results %}
+                    <div class="pure-u-1 pure-u-md-1-4">
+                        <div class="h-box">
+                            {% if result["type"] == "video" %}
+                                <a href="/watch?v={{ result['id'] }}" style="width:100%">
+                                    <div class="thumbnail">
+                                        <img class="thumbnail" loading="lazy" src="{% if proxy == 'True' %}/thumbnail?v={{ result['id'] }}{% else %}https://img.youtube.com/vi/{{ result['id'] }}/0.jpg{% endif %}" onerror="document.cookie = 'proxy=True;max-age=2592000;';">
+                                        <p class="length">{{ result["length"] }}</p>
+                                    </div>
+                                    <p dir="auto">{{ result['title'] }}</p>
+                                </a>
+                                
+                                <div class="video-card-row flexible">
+                                    <a href="/channel/{{ result['authorId'] }}">{{ result["author"] }}</a>
+                                </div>
+                                
+                                <div class="video-card-row flexible">
+                                    <div class="flex-left">
+                                        <p class="video-data" dir="auto">{{ result["view_count_text"] }}</p>
+                                        <p class="video-data" dir="auto">{{ result["published"] }}</p>
+                                    </div>
+                                </div>
+                            {% elif result["type"] == "channel" %}
+                                <a href="/channel/{{ result["id"] }}">
+                                    <center>
+                                        <img loading="lazy" tabindex="-1" style="width:56.25%" src="{{ result["thumbnail"] }}">
+                                    </center>
+                                    <p dir="auto">{{ result["author"] }}</p>
+                                </a>
+                            {% elif result["type"] == "playlist" %}
+                                <a style="width: 100%;" href="/playlist?list={{ result["id"] }}">
+                                    <div class="thumbnail">
+                                        <img loading="lazy" tabindex="-1" class="thumbnail" src="{{ result['thumbnail'] }}">
+                                        <p class="length">{{ result["count"] }}個の動画</p>
+                                    </div>
+                                    <p dir="auto">{{ result["title"] }}</p>
+                                </a>
+                            {% endif %}
                         </div>
-                        <p dir="auto">{{ result['title'] }}</p>
-                    </a>
-                    <div class="video-card-row flexible">
-                        <a href="/channel/{{ result['authorId'] }}">{{ result["author"] }}</a>
                     </div>
-                    <div class="video-card-row flexible">
-                        <div class="flex-left">
-                            <p class="video-data" dir="auto">{{ result["view_count_text"] }}</p>
-                            <p class="video-data" dir="auto">{{ result["published"] }}</p>
-                        </div>
-                    </div>
-                {% endif %}
+                    {% endfor %}
+                </div>
             </div>
-            {% endfor %}
         </div>
 
         <script>
