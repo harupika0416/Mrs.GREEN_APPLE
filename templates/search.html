@@ -65,14 +65,15 @@
 
             #contents {
                 margin-top: 80px;
-                overflow: hidden;
                 padding: 10px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
             }
 
             .video-item {
-                float: left;
-                width: calc(100% / 5 - 10px); /* 5列で表示 */
-                margin: 0 5px 10px 5px;
+                flex: 1 1 calc(100% / 5 - 10px); /* 5列 */
+                margin: 5px;
                 text-align: center;
                 background-color: #f9f9f9;
                 border: 1px solid #ddd;
@@ -93,19 +94,19 @@
             /* レスポンシブ対応 */
             @media screen and (max-width: 1200px) {
                 .video-item {
-                    width: calc(100% / 4 - 10px); /* 4列 */
+                    flex: 1 1 calc(100% / 4 - 10px); /* 4列 */
                 }
             }
 
             @media screen and (max-width: 900px) {
                 .video-item {
-                    width: calc(100% / 3 - 10px); /* 3列 */
+                    flex: 1 1 calc(100% / 3 - 10px); /* 3列 */
                 }
             }
 
             @media screen and (max-width: 600px) {
                 .video-item {
-                    width: calc(100% / 2 - 10px); /* 2列 */
+                    flex: 1 1 calc(100% / 2 - 10px); /* 2列 */
                 }
 
                 #searchbox {
