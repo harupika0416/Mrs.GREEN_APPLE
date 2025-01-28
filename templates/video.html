@@ -25,16 +25,7 @@
             <div class="pure-u-1 pure-u-md-2-24"></div>
             <div id="contents" class="pure-u-1 pure-u-md-20-24">
                 <div class="pure-g navbar h-box">
-                    <div class="pure-u-1 pure-u-md-12-24 searchbar">
-                        <a href="javascript:location.replace('/')">ホーム</a><br>
-                        <a href="javascript:location.replace('/bbs')">掲示板</a>
-                    
-                        <form class="pure-form" action="/search" method="get">
-                            <fieldset>
-                                <input id="searchbox" name="q" type="search" placeholder="検索" value="" title="検索" autocomplete="on" autocorrect="on" autocapitalize="none" spellcheck="false" >
-                            </fieldset>
-                        </form>
-                    </div>
+                    <!-- ここで検索欄と次ページボタンを削除 -->
                 </div>
                 <div id="player-container" class="h-box">
                     <video id="player" class="on-video_player video-js player-style-invidious" loadedmetadata="settime()" controls="" playsinline="" loop="" style="outline:none;width:100%;background-color:#000;" poster="{% if proxy == "True" %}/thumbnail?v={{ videoid }}{% else %}https://img.youtube.com/vi/{{ videoid }}/0.jpg{% endif %}">
@@ -97,7 +88,12 @@
             </div>
         </div>
         <div class="pure-u-1 pure-u-md-2-24"></div>
-        
+
+        <!-- 灰色のバー追加 -->
+        <div style="background-color: #B0B0B0; padding: 10px; text-align: center;">
+            <p>© 2025 動画サイト</p>
+        </div>
+
         <script>
             const xhr = new XMLHttpRequest();
             xhr.open("GET", "/comments?v=" + getQueryValue('v'));
@@ -127,19 +123,17 @@
             let player = document.getElementById("player");
 
             document.cookie = "yuki=True; path=/; max-age=10800;";
-        
 
             const haveLoopCookie = getCookie("loop") === 'true' ? true : false;
             player.loop = haveLoopCookie;
             document.getElementById("loop").checked = haveLoopCookie;
 
             document.getElementById("autonextpage").checked = getCookie("autonextpage") === 'true' ? true : false;
-            
 
             function changeAutoNextPage(checkbox) {      
                 document.cookie =  `autonextpage=${checkbox.checked}; path=/; max-age=10800;`;
             }
-            
+
             function autoNextPage() {
                 const enable_autoNextPage = document.getElementById('autonextpage').checked;
                 document.cookie = `autonextpage=${enable_autoNextPage}; max-age=10800;`;
@@ -151,16 +145,12 @@
             }
 
             player.addEventListener('ended', autoNextPage)
-            
+
             function changeLoop(checkbox) {      
                 const enable_loop = checkbox.checked;
                 document.getElementById("player").loop = enable_loop;
                 document.cookie = `loop=${enable_loop}; path=/; max-age=10800;`;
             }
-            
-            /* function sleep(waitMsec) {      var startMsec = new Date();while (new Date() - startMsec < waitMsec);} */
-
-            
 
             document.getElementById("player").currentTime = getQueryValue('t') || 0;
             
@@ -177,7 +167,6 @@
             }
         
             window.addEventListener('keydown', keydown);
-        
 
             const description_a_tags = document.getElementById('descriptionWrapper').getElementsByTagName('a');
             for(let i = 0; i < description_a_tags.length; i++) {
@@ -199,7 +188,6 @@
             reload_button_elm.setAttribute('onclick', 'location.replace(location.href);');
             reload_button_elm.innerHTML = 'リロード';
             
-            
             setTimeout(() => {
                 if(player.networkState === 3){
                     let update_api_xhr = new XMLHttpRequest();
@@ -213,7 +201,7 @@
                     player.remove()
                 }
             }, 1000);
-            
+
             (function updateDisplayCurrentTime() {
                 setTimeout(() => {
                     const player = document.getElementById('player');
