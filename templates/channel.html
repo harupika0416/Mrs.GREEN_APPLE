@@ -167,5 +167,29 @@
                 },delay:300
         });
         </script>
+        <script>
+    function changeBackgroundColor() {
+        const currentHour = new Date().getHours();
+        let backgroundColor;
+
+        if (currentHour >= 6 && currentHour < 12) {
+            backgroundColor = "#FFFAE3"; // 朝 (明るい黄色)
+        } else if (currentHour >= 12 && currentHour < 18) {
+            backgroundColor = "#A3DFF7"; // 昼 (明るい青)
+        } else if (currentHour >= 18 && currentHour < 22) {
+            backgroundColor = "#FF9A8B"; // 夕方 (夕焼けの赤)
+        } else {
+            backgroundColor = "#2E2E2E"; // 夜 (ダークグレー)
+        }
+
+        document.body.style.backgroundColor = backgroundColor;
+    }
+
+    // ページが読み込まれたときに背景色を変更
+    changeBackgroundColor();
+
+    // 1時間ごとに背景色を更新
+    setInterval(changeBackgroundColor, 3600000);
+</script>
     </body>
 </html>
