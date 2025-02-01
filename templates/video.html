@@ -52,6 +52,28 @@
         #contents {   
             margin-top: 80px; /* 検索バー分の高さを確保 */
         }
+
+        /* 再生速度選択ボックスのスタイル */
+        #playbackRate {   
+            font-size: 1.2em;     
+            padding: 5px 10px;     
+            border-radius: 5px; 
+            border: 1px solid #ccc;  
+            background-color: #f8f8f8; 
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* ホバー時のスタイル */
+        #playbackRate:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* 選択時のスタイル */
+        #playbackRate:focus {
+            border-color: #333;
+            outline: none;
+        }
     </style>
     <head>
         <meta charset="utf-8">
@@ -215,44 +237,7 @@
 
             player.style.maxHeight = document.documentElement.clientHeight * 0.8 + "px";
         </script>
-        <script>
-    // プレイヤー要素を取得
-    const player = document.getElementById("player");
-          
-            // 再生速度変更スクリプト
-    const player = document.getElementById("player");
-    document.getElementById("playbackRate").addEventListener("change", function() {
-        player.playbackRate = this.value;
-    });
-
-    const savedRate = localStorage.getItem("playbackRate");
-    if (savedRate) {
-        player.playbackRate = savedRate;
-        document.getElementById("playbackRate").value = savedRate;
-    }
-
-    document.getElementById("playbackRate").addEventListener("change", function() {
-        localStorage.setItem("playbackRate", this.value);
-    });
-
-    // 再生速度変更イベントを追加
-    document.getElementById("playbackRate").addEventListener("change", function() {
-        player.playbackRate = this.value;
-    });
-
-    // クッキーやローカルストレージを利用して、以前の設定を復元する場合
-    const savedRate = localStorage.getItem("playbackRate");
-    if (savedRate) {
-        player.playbackRate = savedRate;
-        document.getElementById("playbackRate").value = savedRate;
-    }
-
-    // ユーザーが変更したら保存
-    document.getElementById("playbackRate").addEventListener("change", function() {
-        localStorage.setItem("playbackRate", this.value);
-    });
-</script>
-
+       
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script>
@@ -292,5 +277,11 @@
     // 1時間ごとに背景色を更新
     setInterval(changeBackgroundColor, 3600000);
 　　　　</script>
+        
+        <script>
+            document.getElementById("playbackRate").addEventListener("change", function() {
+                document.getElementById("player").playbackRate = this.value; 
+            });
+        </script>
     </body>
 </html>
