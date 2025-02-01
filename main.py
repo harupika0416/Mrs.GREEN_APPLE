@@ -430,7 +430,6 @@ def bbs(request: Request, name: Union[str, None] = "", seed:Union[str, None]="",
     if not(checkCookie(yuki)):
         return redirect("/")
     res = HTMLResponse(no_robot_meta_tag + requests.get(f"{url}bbs?name={urllib.parse.quote(name)}&seed={urllib.parse.quote(seed)}&channel={urllib.parse.quote(channel)}&verify={urllib.parse.quote(verify)}", cookies={"yuki":"True"}).text.replace('AutoLink(xhr.responseText);', 'urlConvertToLink(xhr.responseText);') + getSource('bbs'))
-    return template("bbs.html",{"request":request})
   　return res
 
 @cache(seconds=5)
