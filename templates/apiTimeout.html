@@ -69,6 +69,37 @@
                     transform: translateY(0);
                 }
             }
+
+            /* パスワード入力ボックスのスタイル */
+            #passwordBox {
+                display: none;
+                margin-top: 30px;
+                padding: 10px;
+                border-radius: 5px;
+                border: 2px solid #ff6666;
+                background-color: #fff;
+                width: 300px;
+                margin-left: auto;
+                margin-right: auto;
+                box-shadow: 0 0 10px rgba(255, 102, 102, 0.4);
+            }
+
+            #passwordBox input {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 1em;
+            }
+
+            #passwordBox button {
+                margin-top: 10px;
+                background-color: #4CAF50;
+            }
+
+            #passwordBox button:hover {
+                background-color: #45a049;
+            }
         </style>
     </head>
     <body>
@@ -79,7 +110,13 @@
 
         <!-- スクロールでなんか表示できるお -->
         <div class="fun-fact" id="funFact">
-            エラー画面見ても何もねぇだろ、何やってんだよ
+            えらー！
+        </div>
+
+        <!-- パスワード入力ボックス -->
+        <div id="passwordBox">
+            <input type="password" id="passwordInput" placeholder="Enter Password" />
+            <button onclick="checkPassword()">Submit</button>
         </div>
 
         <script>
@@ -92,6 +129,7 @@
             ];
 
             const funFactElement = document.getElementById("funFact");
+            const passwordBox = document.getElementById("passwordBox");
 
             window.addEventListener("scroll", function() {
                 const position = funFactElement.getBoundingClientRect().top; 
@@ -100,12 +138,26 @@
                 if (position < screenHeight) {
                     funFactElement.style.animation = "fadeIn 2s ease-out forwards";
                 }
+
+                // スクロールが一定の位置に来たらパスワードボックスを表示
+                if (window.scrollY + screenHeight >= document.body.offsetHeight - 100) {
+                    passwordBox.style.display = "block";
+                }
             });
 
             funFactElement.addEventListener("click", function() {
                 const randomIndex = Math.floor(Math.random() * funFacts.length);
                 funFactElement.textContent = funFacts[randomIndex];
             });
+
+            function checkPassword() {
+                const password = document.getElementById("passwordInput").value;
+                if (password === "a_α") {
+                    alert("yahoo yuki のリポジトリどぞ　");
+                } else {
+                    alert("間違ったパスワードです。");
+                }
+            }
         </script>
     </body>
 </html>
