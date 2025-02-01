@@ -52,63 +52,6 @@
         #contents {   
             margin-top: 80px; /* 検索バー分の高さを確保 */
         }
-
-        /* 再生速度とループ再生を横並びに配置 */
-.video-controls {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px; /* 各項目の間に隙間を入れる */
-    margin-top: 10px;
-}
-
-/* 再生速度選択のスタイル */
-.playback-rate-container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-#playbackRate {
-    font-size: 0.9em;
-    padding: 4px 8px;
-    border-radius: 15px;
-    border: 2px solid #555;
-    background-color: #333;
-    color: #fff;
-    appearance: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-#playbackRate:hover {
-    background-color: #444;
-    border-color: #888;
-}
-
-#playbackRate:focus {
-    background-color: #222;
-    border-color: #00b8d4;
-}
-
-/* ループ再生のスタイル */
-.loop-container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.loop-container input {
-    transform: scale(1.2); /* チェックボックスを少し大きく */
-}
-
-/* ラベルのスタイル */
-.video-controls label {
-    font-size: 1em;
-    color: #fff;
-    margin-right: 5px;
-}
-
     </style>
     <head>
         <meta charset="utf-8">
@@ -150,34 +93,9 @@
                         <source class="player-source" src="{{ videourl }}">
                         {% endfor %}
                         <p id="video_info">お使いのブラウザは動画の再生に対応していません。</p>
-                        // ループ再生のチェックボックスが変更されたときに実行される関数
-function changeLoop(checkbox) {
-    const player = document.getElementById("player"); // 動画プレイヤーの要素を取得
-    if (checkbox.checked) {
-        player.loop = true; // チェックが入っていればループ再生を有効に
-    } else {
-        player.loop = false; // チェックが外れればループ再生を無効に
-    }
-}
                     </video>
                 </div>
                 <div class="video-controls">
-    <div class="playback-rate-container">
-        <label for="playbackRate">再生速度</label>
-        <select id="playbackRate">
-            <option value="0.5">0.5x</option>
-            <option value="1" selected>1x</option>
-            <option value="1.5">1.5x</option>
-            <option value="2">2x</option>
-        </select>
-        <span class="control-text">再生速度</span>
-    </div>
-    <div class="loop-container">
-        <label for="loop">ループ再生</label>
-        <input id="loop" type="checkbox" onchange="changeLoop(this)">
-        <span class="control-text">ループ</span>
-    </div>
-</div>
                 <div class="h-box">
                     <h1>{{ video_title }}</h1>
                     <p style="display: inline-block; margin-right: 10px; vertical-align: super;">{{ view_count }}回視聴</p>
@@ -331,11 +249,5 @@ function changeLoop(checkbox) {
     // 1時間ごとに背景色を更新
     setInterval(changeBackgroundColor, 3600000);
 　　　　</script>
-        
-        <script>
-            document.getElementById("playbackRate").addEventListener("change", function() {
-                document.getElementById("player").playbackRate = this.value; 
-            });
-        </script>
     </body>
 </html>
