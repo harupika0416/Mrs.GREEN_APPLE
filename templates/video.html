@@ -54,26 +54,32 @@
         }
 
         /* 再生速度選択ボックスのスタイル */
-        #playbackRate {   
-            font-size: 1.2em;     
-            padding: 5px 10px;     
-            border-radius: 5px; 
-            border: 1px solid #ccc;  
-            background-color: #f8f8f8; 
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
+#playbackRate {
+    font-size: 0.9em;
+    padding: 4px 8px;
+    border-radius: 15px;
+    border: 2px solid #555;
+    background-color: #333;
+    color: #fff;
+    appearance: none; /* デフォルトの矢印を消す */
+    outline: none;
+    width: auto;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
 
-        /* ホバー時のスタイル */
-        #playbackRate:hover {
-            background-color: #e0e0e0;
-        }
+/* ホバー時のスタイル */
+#playbackRate:hover {
+    background-color: #444;
+    border-color: #888;
+}
 
-        /* 選択時のスタイル */
-        #playbackRate:focus {
-            border-color: #333;
-            outline: none;
-        }
+/* 選択時のスタイル */
+#playbackRate:focus {
+    background-color: #222;
+    border-color: #00b8d4;
+}
+
     </style>
     <head>
         <meta charset="utf-8">
