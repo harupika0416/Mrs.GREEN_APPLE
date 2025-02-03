@@ -16,7 +16,7 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            transition: background-color 1s ease; /* 背景色の変化にスムーズなトランジションを追加 */
+            transition: background-color 1s ease;
         }
 
         #logo {
@@ -104,28 +104,25 @@
             index = (index + 1) % placeholderWords.length; 
         }, 10000);
 
-        // 背景色を時間帯に応じて変更する関数
         function changeBackgroundColor() {
             const currentHour = new Date().getHours();
             if (currentHour >= 6 && currentHour < 12) {
                 // 朝 (6:00 - 11:59)
-                document.body.style.backgroundColor = "#FFFAE3";  // 明るい黄色
+                document.body.style.backgroundColor = "#FFFAE3";
             } else if (currentHour >= 12 && currentHour < 18) {
                 // 昼 (12:00 - 17:59)
-                document.body.style.backgroundColor = "#A3DFF7";  // 明るい青
+                document.body.style.backgroundColor = "#A3DFF7";
             } else if (currentHour >= 18 && currentHour < 22) {
                 // 夕方 (18:00 - 21:59)
-                document.body.style.backgroundColor = "#FF9A8B";  // 夕焼けの赤
+                document.body.style.backgroundColor = "#FF9A8B";
             } else {
                 // 夜 (22:00 - 5:59)
-                document.body.style.backgroundColor = "#2E2E2E";  // ダークグレー
+                document.body.style.backgroundColor = "#a9a9a9";
             }
         }
 
-        // ページがロードされた際に背景色を設定
         changeBackgroundColor();
 
-        // 1時間ごとに背景色を更新
         setInterval(changeBackgroundColor, 3600000); // 1時間 = 3600000ミリ秒
     </script>
 </body>
