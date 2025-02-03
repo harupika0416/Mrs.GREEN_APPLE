@@ -140,6 +140,33 @@
             </div>
         </div>
         <div class="pure-u-1 pure-u-md-2-24"></div>
+
+        <script>
+            function loadComments(videoId) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "/comments?v=" + videoId);
+    xhr.onload = function () {      
+        if (xhr.status == 200) {
+            const commentsDiv = document.getElementById('comments');
+            commentsDiv.innerHTML = xhr.responseText;
+
+            const commentLinks = commentsDiv.getElementsByTagName('a');
+            for (let i = 0; i < commentLinks.length; i++) {
+                const jumpTime = commentLinks[i].getAttribute('data-jump-time');
+                if (jumpTime) {
+                    commentLinks[i].addEventListener('click', function (e) {
+                        e.preventDefault();
+                        document.getElementById("player").currentTime = jumpTime;
+                    });
+                }
+            }
+        } else { 
+            document.getElementById('comments').innerHTML = "コメントの読み込みに失敗しました。再読み込み等をお試し下さい。"; 
+        }
+    };
+    xhr.send();
+}
+        </script>
         
         <script>
             const player = document.getElementById("player");
