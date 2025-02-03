@@ -85,6 +85,82 @@
 .pure-button-primary:active {
     background-color: #004085;
 }
+/* チェックボックスのスタイル */
+input[type="checkbox"] {
+    display: none; /* 元のチェックボックスを隠す */
+}
+
+/* ラベルのスタイル */
+input[type="checkbox"] + label {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px 0; /* 上下に隙間 */
+    user-select: none;
+}
+
+/* チェックボックスが選択されている状態 */
+input[type="checkbox"]:checked + label {
+    background-color: #007bff; /* チェック時に色変更 */
+}
+
+/* ラベルにカーソルを合わせたときのエフェクト */
+input[type="checkbox"] + label:hover {
+    background-color: #45a049;
+}
+
+/* チェックボックスのカスタムスタイル */
+input[type="checkbox"] + label::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    border: 2px solid #fff;
+    border-radius: 3px;
+    margin-right: 10px;
+    background-color: transparent;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* チェックボックスが選択されている場合のカスタムスタイル */
+input[type="checkbox"]:checked + label::before {
+    background-color: #fff;
+    border-color: #007bff; /* チェックされた状態 */
+}
+
+/* チェックがついている場合にチェックマークを表示 */
+input[type="checkbox"]:checked + label::after {
+    content: "\2713"; /* チェックマークの記号 */
+    font-size: 16px;
+    color: #007bff; /* チェック時の色 */
+    position: absolute;
+    top: 4px;
+    left: 3px;
+}
+
+/* モバイルデバイスにおけるラベルのサイズ調整 */
+@media (max-width: 600px) {
+    input[type="checkbox"] + label {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+
+    input[type="checkbox"] + label::before {
+        width: 16px;
+        height: 16px;
+    }
+
+    input[type="checkbox"]:checked + label::after {
+        font-size: 14px;
+        top: 3px;
+        left: 2px;
+    }
+}
 
     </style>
     <head>
@@ -160,8 +236,17 @@
                         </div>
                     </div>
                     <div class="pure-u-1 pure-u-lg-1-5">
-                        <label for="autonextpage">自動で次の動画に遷移<input id="autonextpage" type="checkbox" onchange="changeAutoNextPage(this)"></label><br>
-                        <label for="loop">ループ再生<input id="loop" type="checkbox" onchange="changeLoop(this)"></label>
+    <label for="autonextpage">
+        <input id="autonextpage" type="checkbox" onchange="changeAutoNextPage(this)">
+        自動で次の動画に遷移
+    </label>
+    <br>
+    <label for="loop">
+        <input id="loop" type="checkbox" onchange="changeLoop(this)">
+        ループ再生
+    </label>
+</div>
+
                         {% for rec_video in recommended_videos %}
                         <a href="/watch?v={{ rec_video['video_id'] }}">
                             <div class="thumbnail">
