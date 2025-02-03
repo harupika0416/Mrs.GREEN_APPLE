@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
     <style>
-       /* 固定された検索欄のスタイル */
 #search-container {
-    background-color: #808080; /* 灰色 */
+    background-color: #808080;
     position: fixed;
     top: 0;
     left: 0;
@@ -15,7 +14,6 @@
     justify-content: center;
 }
 
-/* 「Yahoo Yuki !」のスタイル */
 #home-link {
     font-size: 18px;
     font-weight: bold;
@@ -25,7 +23,6 @@
     margin-right: 20px;
 }
 
-/* 検索バーのスタイル */
 #searchbox {
     width: 400px;
     padding: 10px;
@@ -47,9 +44,8 @@
     outline: none;
 }
 
-/* コンテンツエリアの上マージン調整 */
 #contents {
-    margin-top: 80px; /* 検索バー分の高さを確保 */
+    margin-top: 80px;
 }
 
 
@@ -173,22 +169,20 @@
         let backgroundColor;
 
         if (currentHour >= 6 && currentHour < 12) {
-            backgroundColor = "#FFFAE3"; // 朝 (明るい黄色)
+            backgroundColor = "#FFFAE3";
         } else if (currentHour >= 12 && currentHour < 18) {
-            backgroundColor = "#A3DFF7"; // 昼 (明るい青)
+            backgroundColor = "#A3DFF7";
         } else if (currentHour >= 18 && currentHour < 22) {
-            backgroundColor = "#FF9A8B"; // 夕方 (夕焼けの赤)
+            backgroundColor = "#FF9A8B";
         } else {
-            backgroundColor = "#2E2E2E"; // 夜 (ダークグレー)
+            backgroundColor = "#a9a9a9";
         }
 
         document.body.style.backgroundColor = backgroundColor;
     }
 
-    // ページが読み込まれたときに背景色を変更
     changeBackgroundColor();
 
-    // 1時間ごとに背景色を更新
     setInterval(changeBackgroundColor, 3600000);
 </script>
     </body>
