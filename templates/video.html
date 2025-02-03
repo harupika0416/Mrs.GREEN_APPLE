@@ -142,30 +142,45 @@
         <div class="pure-u-1 pure-u-md-2-24"></div>
 
         <script>
-            function loadComments(videoId) {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", "/comments?v=" + videoId);
-    xhr.onload = function () {      
-        if (xhr.status == 200) {
-            const commentsDiv = document.getElementById('comments');
-            commentsDiv.innerHTML = xhr.responseText;
+document.addEventListener("DOMContentLoaded", function () {
+    function getQueryValue(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
 
-            const commentLinks = commentsDiv.getElementsByTagName('a');
-            for (let i = 0; i < commentLinks.length; i++) {
-                const jumpTime = commentLinks[i].getAttribute('data-jump-time');
-                if (jumpTime) {
-                    commentLinks[i].addEventListener('click', function (e) {
-                        e.preventDefault();
-                        document.getElementById("player").currentTime = jumpTime;
-                    });
-                }
-            }
-        } else { 
-            document.getElementById('comments').innerHTML = "コメントの読み込みに失敗しました。再読み込み等をお試し下さい。"; 
+    function loadComments() {
+        const videoId = getQueryValue('v');
+        if (!videoId) {
+            document.getElementById('comments').innerHTML = "動画IDが取得できませんでした。";
+            return;
         }
-    };
-    xhr.send();
-}
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "/comments?v=" + videoId);
+        xhr.onload = function () {      
+            if (xhr.status == 200) {
+                const commentsDiv = document.getElementById('comments');
+                commentsDiv.innerHTML = xhr.responseText;
+
+                const commentLinks = commentsDiv.getElementsByTagName('a');
+                for (let i = 0; i < commentLinks.length; i++) {
+                    const jumpTime = commentLinks[i].getAttribute('data-jump-time');
+                    if (jumpTime) {
+                        commentLinks[i].addEventListener('click', function (e) {
+                            e.preventDefault();
+                            document.getElementById("player").currentTime = jumpTime;
+                        });
+                    }
+                }
+            } else { 
+                document.getElementById('comments').innerHTML = "コメントの読み込みに失敗しました。";
+            }
+        };
+        xhr.send();
+    }
+
+    loadComments();
+});
         </script>
         
         <script>
