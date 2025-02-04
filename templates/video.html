@@ -85,78 +85,6 @@
 .pure-button-primary:active {
     background-color: #004085;
 }
-/* チェックボックスのスタイル */
-input[type="checkbox"] {
-    display: none; /* 元のチェックボックスを隠す */
-}
-
-/* ラベルのスタイル */
-input[type="checkbox"] + label {
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 12px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin: 10px 0; /* 上下に隙間 */
-    user-select: none;
-}
-.checkbox-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* チェックボックス同士の間隔 */
-    margin-top: 15px;
-}
-
-.custom-checkbox {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    cursor: pointer;
-    position: relative;
-    padding-left: 30px; /* チェックマーク用の余白 */
-}
-
-.custom-checkbox input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.custom-checkbox .checkmark {
-    position: absolute;
-    left: 0;
-    top: 2px;
-    width: 20px;
-    height: 20px;
-    background-color: #ccc;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
-.custom-checkbox input:checked + .checkmark {
-    background-color: #4CAF50;
-}
-
-.custom-checkbox .checkmark::after {
-    content: "";
-    position: absolute;
-    display: none;
-    left: 7px;
-    top: 3px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    transform: rotate(45deg);
-}
-
-.custom-checkbox input:checked + .checkmark::after {
-    display: block;
-}
 
     </style>
     <head>
@@ -231,20 +159,9 @@ input[type="checkbox"] + label {
                             <div id="comments"></div>
                         </div>
                     </div>
-    <div class="checkbox-container">
-    <label class="custom-checkbox">
-        <input id="autonextpage" type="checkbox" onchange="changeAutoNextPage(this)">
-        <span class="checkmark"></span>
-        自動で次の動画に遷移
-    </label>
-    <label class="custom-checkbox">
-        <input id="loop" type="checkbox" onchange="changeLoop(this)">
-        <span class="checkmark"></span>
-        ループ再生
-    </label>
-</div>
-
-
+                    <div class="pure-u-1 pure-u-lg-1-5">
+                        <label for="autonextpage">自動で次の動画に遷移<input id="autonextpage" type="checkbox" onchange="changeAutoNextPage(this)"></label><br>
+                        <label for="loop">ループ再生<input id="loop" type="checkbox" onchange="changeLoop(this)"></label>
                         {% for rec_video in recommended_videos %}
                         <a href="/watch?v={{ rec_video['video_id'] }}">
                             <div class="thumbnail">
