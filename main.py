@@ -41,7 +41,7 @@ def getRandomUserAgent():
 
 class InvidiousAPI:
     def __init__(self):
-        self.all = ast.literal_eval(requests.get('https://raw.githubusercontent.com/nyanko3/invidious/refs/heads/main/main.txt', headers=getRandomUserAgent(), timeout=(1.0, 0.5)).text)
+        self.all = ast.literal_eval(requests.get('https://raw.githubusercontent.com/justaweidro/yahoo-inv-instances/refs/heads/main/main.txt', headers=getRandomUserAgent(), timeout=(1.0, 0.5)).text)
         
         self.video = self.all['video']
         self.playlist = self.all['playlist']
@@ -306,7 +306,9 @@ from typing import Union
 
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
-app.mount("/css", StaticFiles(directory="./css"), name="static")
+app.mount("/js", StaticFiles(directory="./statics/js"), name="static")
+app.mount("/css", StaticFiles(directory="./statics/css"), name="static")
+app.mount("/img", StaticFiles(directory="./statics/img"), name="static")
 app.mount("/home", StaticFiles(directory="./blog", html=True), name="static")
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
@@ -444,8 +446,25 @@ def write_bbs(request: Request, name: str = "", message: str = "", seed:Union[st
         return redirect("/")
     if 'Google-Apps-Script' in str(request.scope["headers"][1][1]):
         raise UnallowedBot("GASのBotは許可されていません")
-    
-    t = requests.get(f"{url}bbs/result?name={urllib.parse.quote(name)}&message={urllib.parse.quote(message)}&seed={urllib.parse.quote(seed)}&channel={urllib.parse.quote(channel)}&verify={urllib.parse.quote(verify)}&info={urllib.parse.quote(getInfo(request))}&serververify={getVerifyCode()}", cookies={"yuki":"True"}, allow_redirects=False)
+      
+    params = {
+      'name': urllib.parse.quote(name),
+      'message': urllib.parse.quote(message),
+      'seed': urllib.parse.quote(seed),
+      'channel': urllib.parse.quote(channel),
+      'verify': urllib.parse.quote(verify),
+      'info': urllib.parse.quote(getInfo(request)),
+      'serververify': getVerifyCode()
+    }
+  
+    url_querys = ''
+    for key, value in params.items():
+      url_querys += f'{key}={value}&'
+
+    if url_querys != '':
+      url_querys = '?' + url_querys[:-1]
+      
+    t = requests.get(f"{url}bbs/result" + url_querys, cookies={"yuki": "True"}, allow_redirects=False)
     if t.status_code != 307:
         return HTMLResponse(no_robot_meta_tag + t.text.replace('AutoLink(xhr.responseText);', 'urlConvertToLink(xhr.responseText);') + getSource('bbs'))
         
