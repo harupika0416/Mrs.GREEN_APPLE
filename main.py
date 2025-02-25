@@ -41,20 +41,21 @@ def getRandomUserAgent():
 
 class InvidiousAPI:
     def __init__(self):
-        self.all = ast.literal_eval(requests.get('https://raw.githubusercontent.com/justaweidro/yahoo-inv-instances/refs/heads/main/main.txt', headers=getRandomUserAgent(), timeout=(1.0, 0.5)).text)
+        self.videos = ast.literal_eval(requests.get('https://raw.githubusercontent.com/nyanko3/invi/refs/heads/main/instances.txt', headers=header, timeout=(1.0, 0.5)).text)
         
-        self.video = self.all['video']
-        self.playlist = self.all['playlist']
-        self.search = self.all['search']
-        self.channel = self.all['channel']
-        self.comments = self.all['comments']
+        self.channels = []
+        self.comments = []
+        
+        [[self.channels.append(api), self.comments.append(api)] for api in self.videos]
 
-        self.check_video = False
+        self.checkVideo = False
 
     def info(self):
         return {
-            'API': self.all,
-            'checkVideo': self.check_video
+            'videos': self.videos,
+            'channels': self.channels,
+            'comments': self.comments,
+            'checkVideo': self.checkVideo
         }
 
         
