@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: yahoo
+    name: Mrs.GREEN_APPLE
     env: python
     region: Oregon
     plan: free
